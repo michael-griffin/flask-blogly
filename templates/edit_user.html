@@ -5,14 +5,18 @@
 
 {% block content %}
 
+{% for msg in get_flashed_messages() %}
+  <p style="color: red">{{ msg }}</p>
+{% endfor %}
+
 <!-- update input values with imported user details-->
 <form class="create-user-form" method="POST">
   <label for="first_name">First Name: </label>
-  <input name="first_name">
+  <input name="first_name" value="{{ user.first_name }}">
   <label for="last_name">Last Name:   </label>
-  <input name="last_name">
+  <input name="last_name" value="{{ user.last_name }}">
   <label for="image_url">Image URL:   </label>
-  <input name="image_url">
+  <input name="image_url" value="{{ user.image_url }}">
   <button>Cancel</button>
   <button>Save</button>
 </form>

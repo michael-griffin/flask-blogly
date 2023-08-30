@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 
 <!-- Eventually, should be passing full user object, rather than just name..-->
-{% block title %} {{ user_name }} {% endblock %}
+{% block title %} {{ user.first_name}} {{ user.last_name }} {% endblock %}
 
 {% block content %}
+<img src=" {{ user.image_url }}">
 
+<a href="/users/{{ user.id }}/edit">Edit</a>
+<a href="/users/{{ user.id }}/delete">Delete</a>
 
 {% endblock %}

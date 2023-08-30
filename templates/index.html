@@ -6,6 +6,10 @@
 <div>
   <ul class="users-list">
     {% for user in users %}
+    <a href="/users/1">
+      <li>{{ user.first_name }} {{ user.last_name }}</li>
+    </a>
+
     {% endfor %}
   </ul>
 
@@ -13,3 +17,5 @@
 </div>
 
 {% endblock %}
+
+<!--<a href="/users/{{ user.id }}" >-->
