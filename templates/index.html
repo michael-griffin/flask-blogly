@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} Users {% endblock %}
+
+{% block content %}
+<div>
+  <ul class="users-list">
+    {% for user in users %}
+    {% endfor %}
+  </ul>
+
+  <button class="add-user-button">Add User</button>
+</div>
+
+{% endblock %}
