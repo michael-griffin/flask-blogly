@@ -2,12 +2,14 @@
 
 import os
 
-from flask import Flask
-from models import connect_db
+from flask import Flask, request, redirect, render_template
+from flask_debugtoolbar import DebugToolbarExtension
+from models import connect_db, db, User
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    "DATABASE_URL", 'postgresql:///blogly')
+    'DATABASE_URL', 'postgresql:///users')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
@@ -41,26 +43,30 @@ def add_new_user():
     """Process the add form, adding a new user and going back to /users"""
 
 # GET /users/[user-id]
-@app.get('/users/<int: user_id>')
+@app.get('/users/<int:user_id>')
 def show_user_details(user_id):
+    """"""
 #     Show information about the given user.
 #     Have a button to get to their edit page, and to delete the user.
 
 
 # GET /users/[user-id]/edit
-@app.get('/users/<int: user_id>/edit')
+@app.get('/users/<int:user_id>/edit')
 def show_edit_details(user_id):
+    """"""
 #     Show the edit page for a user.
 #     Have a cancel button that returns to the detail page for a user, and a save button that updates the user.
 
 
-@app.post('/users/<int: user_id>/edit')
+@app.post('/users/<int:user_id>/edit')
 def add_edit_details(user_id):
+    """"""
 # POST /users/[user-id]/edit
 # Process the edit form, returning the user to the /users page.
 
 
-@app.post('/users/<int: user_id>/delete')
+@app.post('/users/<int:user_id>/delete')
 def delete_user(user_id):
+    """"""
 # POST /users/[user-id]/delete
 # Delete the user.

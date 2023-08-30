@@ -1,10 +1,9 @@
 from app import app, db
 from models import DEFAULT_IMAGE_URL, User
-from flask import Flask
+# from flask import Flask
 
 db.drop_all()
 db.create_all()
-
 
 michael = User(first_name='Michael', last_name='Griffin', image_url=DEFAULT_IMAGE_URL)
 josh = User(first_name='Joshua', last_name='Hellstrom')
