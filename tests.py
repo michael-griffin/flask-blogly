@@ -52,6 +52,7 @@ class UserViewTestCase(TestCase):
     def tearDown(self):
         """Clean up any fouled transaction."""
         db.session.rollback()
+
     #@app.get('/')
     def test_list_redirect(self):
         with self.client as c:
@@ -75,24 +76,28 @@ class UserViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
             self.assertIn("<h1> Create a User ", html)
 
-    # #@app.post('/users/new')
-    # def test_new_users_post(self):
-    #     with self.client as c:
-    #         new_user_form = {
-    #             "first_name": "John",
-    #             "last_name": "Smith",
-    #             "image_url": "default-image.jpg"
-    #         }
+    #@app.post('/users/new')
+    def test_new_users_post(self):
+        with self.client as c:
+            new_user_form = {
+                "first_name": "John",
+                "last_name": "Smith",
+                "image_url": "default-image.jpg"
+            }
 
-    #         #add to post? follow_redirects=True
-    #         #Otherwise we might not get to /users
-    #         resp = c.post('/', data=new_user_form)
 
-    #         #Still need some check to see if table itself updated?
+            #add to post? follow_redirects=True
+            #Otherwise we might not get to /users
+            resp = c.post('/users/new', data=new_user_form, follow_redirects=True)
 
-    #         #New users form should redirect back to users list:
-    #         self.assertEqual(resp.status_code, 302)
+            users = User.query.all()
+            user = User.query.filter_by(first_name = 'John').one_or_none()
 
-    #         html = resp.get_data(as_text=True)
-    #         self.assertIn("John", html)
-    #         self.assertIn("Smith", html)
+            self.assertEqual(user.first_name == 'John', True)
+            self.assertIsInstance(user, User)
+
+            self.assertEqual(resp.status_code, 200)
+
+            html = resp.get_data(as_text=True)
+            self.assertIn("John", html)
+            self.assertIn("Smith", html)

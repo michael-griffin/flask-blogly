@@ -26,7 +26,6 @@ def show_home_page():
     return redirect('/users')
 
 
-
 # Show all users.
 @app.get('/users')
 def show_all_users():
@@ -54,9 +53,7 @@ def add_new_user():
 
     first_name = request.form.get('first_name')
     last_name = request.form.get('last_name')
-    image_url = request.form['image_url']
-
-    image_url = image_url if image_url else None
+    image_url = request.form['image_url'] or None # Falsy value of "" evaluates to None
 
     user = User(first_name=first_name, last_name=last_name, image_url=image_url)
 
@@ -90,9 +87,10 @@ def add_edit_details(user_id):
     """"""
     first_name = request.form.get('first_name')
     last_name = request.form.get('last_name')
-    image_url = request.form['image_url']
 
+    image_url = request.form['image_url'] # Repeat shortening from other route
     image_url = image_url if image_url else None
+
     user = User.query.get(user_id)
     user.first_name = first_name
     user.last_name = last_name
@@ -108,6 +106,7 @@ def add_edit_details(user_id):
             flash("You must enter a last name!")
         return render_template("edit_user.html", user=user)
     else:
+        flash("User added successfully!") # Edit index.html to show this
         return redirect('/users')
 
 
@@ -117,6 +116,8 @@ def delete_user(user_id):
     user = User.query.get(user_id)
 
     db.session.delete(user)
+
     db.session.commit()
 
+    flash("User deleted.") # Edit  to show this
     return redirect('/users')

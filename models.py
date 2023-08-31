@@ -32,3 +32,6 @@ class User(db.Model):
         db.String(),
         nullable=True,
         default=DEFAULT_IMAGE_URL)
+
+    # get_full_name(self):
+    #     return f""
