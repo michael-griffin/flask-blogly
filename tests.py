@@ -85,12 +85,8 @@ class UserViewTestCase(TestCase):
                 "image_url": "default-image.jpg"
             }
 
-
-            #add to post? follow_redirects=True
-            #Otherwise we might not get to /users
             resp = c.post('/users/new', data=new_user_form, follow_redirects=True)
 
-            users = User.query.all()
             user = User.query.filter_by(first_name = 'John').one_or_none()
 
             self.assertEqual(user.first_name == 'John', True)

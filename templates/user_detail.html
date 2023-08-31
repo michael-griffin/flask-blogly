@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 
-
-{% block title %} {{ user.first_name}} {{ user.last_name }} {% endblock %}
+{% block title %} {{ user.get_full_name() }} {% endblock %}
 
 {% block content %}
+{% for msg in get_flashed_messages() %}
+  <p style="color: green">{{ msg }}</p>
+{% endfor %}
+
 <!--user detail comment for testing-->
 <img src="{{ user.image_url }}" style="width: 100px">
 
@@ -16,5 +19,22 @@
 </form>
 
 <!-- form.action and form.method attributes, new to HTML5 -->
+
+
+<div>
+  <h3>Posts</h3>
+  <ul class="users-list">
+    {% for user in users %}
+    <a href="/users/{{ user.id }}">
+      <li>{{ post.title }}</li>
+    </a>
+
+    {% endfor %}
+  </ul>
+
+  <form action="/users/new">
+    <button>Add Post</button>
+  </form>
+</div>
 
 {% endblock %}

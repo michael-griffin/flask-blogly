@@ -4,11 +4,16 @@
 
 {% block content %}
 <!--users comment for testing-->
+
+{% for msg in get_flashed_messages() %}
+  <p style="color: green">{{ msg }}</p>
+{% endfor %}
+
 <div>
   <ul class="users-list">
     {% for user in users %}
     <a href="/users/{{ user.id }}">
-      <li>{{ user.first_name }} {{ user.last_name }}</li>
+      <li>{{ user.get_full_name() }}</li>
     </a>
 
     {% endfor %}

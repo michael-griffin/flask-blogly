@@ -53,43 +53,43 @@ def add_new_user():
 
     first_name = request.form.get('first_name')
     last_name = request.form.get('last_name')
-    image_url = request.form['image_url'] or None # Falsy value of "" evaluates to None
+    image_url = request.form['image_url'] or None
 
     user = User(first_name=first_name, last_name=last_name, image_url=image_url)
 
     db.session.add(user)
     db.session.commit()
 
+    flash('User added!')
     return redirect('/users')
 
 
 @app.get('/users/<int:user_id>')
 def show_user_details(user_id):
-    """"""
+    """Show information about the given user.
+    Give options for editing/deleting user info."""
     user = User.query.get_or_404(user_id)
     return render_template('user_detail.html', user=user)
-#     Show information about the given user.
-#     Have a button to get to their edit page, and to delete the user.
+
 
 
 
 @app.get('/users/<int:user_id>/edit')
 def show_edit_details(user_id):
-    """"""
+    """Show the edit page for a user.
+    Have a cancel and save button for the opened form.
+    """
     user = User.query.get(user_id)
     return render_template('edit_user.html', user=user)
-#     Show the edit page for a user.
-#     Have a cancel button that returns to the detail page for a user, and a save button that updates the user.
 
 
 @app.post('/users/<int:user_id>/edit')
 def add_edit_details(user_id):
-    """"""
+    """Update user info with form's values"""
     first_name = request.form.get('first_name')
     last_name = request.form.get('last_name')
 
-    image_url = request.form['image_url'] # Repeat shortening from other route
-    image_url = image_url if image_url else None
+    image_url = request.form['image_url'] or None
 
     user = User.query.get(user_id)
     user.first_name = first_name
@@ -106,18 +106,23 @@ def add_edit_details(user_id):
             flash("You must enter a last name!")
         return render_template("edit_user.html", user=user)
     else:
-        flash("User added successfully!") # Edit index.html to show this
+        print("\n\n got here?")
+        flash("User edited successfully!")
         return redirect('/users')
 
 
 @app.post('/users/<int:user_id>/delete')
 def delete_user(user_id):
-    """"""
+    """Delete the user and return to the user list (while confirming delete)"""
     user = User.query.get(user_id)
-
     db.session.delete(user)
-
     db.session.commit()
 
-    flash("User deleted.") # Edit  to show this
+    flash("User deleted sucessfully.")
     return redirect('/users')
+
+
+
+
+
+
