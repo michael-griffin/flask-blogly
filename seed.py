@@ -1,6 +1,6 @@
 from app import app, db
 from models import DEFAULT_IMAGE_URL, User
-# from flask import Flask
+
 
 db.drop_all()
 db.create_all()

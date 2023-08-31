@@ -5,8 +5,6 @@ db = SQLAlchemy()
 
 
 DEFAULT_IMAGE_URL = 'default-image.jpg'
-#DEFAULT_IMAGE_URL = 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fvectors%2Fblank-profile-picture-mystery-man-973460%2F&psig=AOvVaw2mtXUjpMufpUsZF82k5snm&ust=1693519676240000&source=images&cd=vfe&opi=89978449&ved=0CA8QjRxqFwoTCLiEwceyhYEDFQAAAAAdAAAAABAE'
-
 
 def connect_db(app):
     app.app_context().push()
