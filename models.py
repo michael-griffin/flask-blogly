@@ -73,3 +73,44 @@ class Post(db.Model):
 
     user = db.relationship('User', backref="posts")
 
+
+
+
+class Tag(db.Model):
+    """Tag links a post and a tag together. Each post can only be assigned to
+    a tag one time."""
+
+    __tablename__ = "tags"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        autoincrement=True)
+
+    name = db.Column(
+        db.String(50),
+        nullable=False,
+    )
+
+    posts = db.relationship('Post', secondary="post_tags", backref="tag")
+
+
+
+class PostTag(db.Model):
+    """Through table for Post and Tag"""
+
+    __tablename__ = "post_tags"
+
+    post_id = db.Column(
+        db.Integer,
+        db.ForeignKey("posts.id"),
+        primary_key=True,
+        nullable=False,
+    )
+
+    tag_id = db.Column(
+        db.Integer,
+        db.ForeignKey("tags.id"),
+        primary_key=True,
+        nullable=False,
+    )
