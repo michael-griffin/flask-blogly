@@ -5,7 +5,7 @@
 
 {% block content %}
 <!--user detail comment for testing-->
-<img src=" {{ user.image_url }}">
+<img src="{{ user.image_url }}" style="width: 100px">
 
 
 <form action="/users/{{ user.id }}/edit">

@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-DEFAULT_IMAGE_URL = 'default-image.jpg'
+DEFAULT_IMAGE_URL = '/static/default-image.jpg'
 
 def connect_db(app):
     app.app_context().push()
