@@ -9,10 +9,10 @@
   {{ post.content }}
 </p>
 
-<form action="/users/{{post.user.id}}" >
+<form action="/users/{{ post.user_id }}" >
   <button formmethod="get" >Cancel</button>
-  <button formmethod="get" formaction="/posts/{{ post..id }}/edit">Edit</button>
-  <button formmethod="post">Delete</button>
+  <button formmethod="get" formaction="/posts/{{ post.id }}/edit">Edit</button>
+  <button formmethod="post" formaction="/posts/{{ post.id }}/delete">Delete</button>
 </form>
 
 

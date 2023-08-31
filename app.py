@@ -19,18 +19,16 @@ connect_db(app)
 
 
 
-#Redirect to list of users. (We’ll fix this in a later step).
 @app.get('/')
 def show_home_page():
     """List of users, button to add user."""
     return redirect('/users')
 
 
-# Show all users.
 @app.get('/users')
 def show_all_users():
     """Show all users"""
-    #get database, pass users to index.html
+    # get database, pass users to index.html
     users = User.query.all()
     # contains link to the add-user form.
     return render_template('index.html', users=users)
@@ -65,8 +63,6 @@ def show_user_details(user_id):
     Give options for editing/deleting user info."""
     user = User.query.get_or_404(user_id)
     return render_template('user_detail.html', user=user)
-
-
 
 
 @app.get('/users/<int:user_id>/edit')
@@ -117,14 +113,6 @@ def delete_user(user_id):
     return redirect('/users')
 
 
-
-
-
-
-
-# Add Post Routes»
-
-# GET /users/[user-id]/posts/new
 @app.get('/users/<int:user_id>/posts/new')
 def show_new_post_form(user_id):
     """Show an add form for users"""
@@ -132,8 +120,6 @@ def show_new_post_form(user_id):
     return render_template('add_post.html', user=user)
 
 
-
-# POST /users/[user-id]/posts/new
 @app.post('/users/<int:user_id>/posts/new')
 def add_new_post(user_id):
     """Handle add form; add post and redirect to the user detail page."""
@@ -147,7 +133,7 @@ def add_new_post(user_id):
             flash('Post content is needed')
         return redirect('/users/<int:user_id>/posts/new')
 
-    post = Post(title=title, content=content)
+    post = Post(title=title, content=content, user_id=user_id)
     db.session.add(post)
     db.session.commit()
 
@@ -155,8 +141,6 @@ def add_new_post(user_id):
     return redirect(f"/users/{user_id}")
 
 
-
-# GET /posts/[post-id]
 @app.get('/posts/<int:post_id>')
 def show_post(post_id):
     """Show a post"""
@@ -170,7 +154,6 @@ def show_edit_post_form(post_id):
     """Show edit post form and have cancel to return to user page"""
     post = Post.query.get(post_id)
     return render_template('edit_post.html', post=post)
-
 
 
 @app.post('/posts/<int:post_id>/edit')
@@ -197,17 +180,13 @@ def edit_post_details(post_id):
         return redirect(f"/posts/{post_id}")
 
 
-
-
-# POST /posts/[post-id]/delete
-#     Delete the post.
 @app.post('/posts/<int:post_id>/delete')
 def delete_post(post_id):
     """Delete the user and return to the user list (while confirming delete)"""
     post = Post.query.get(post_id)
-    user_id = post.user.id
+    user_id = post.user_id
     db.session.delete(post)
     db.session.commit()
 
     flash("Post deleted sucessfully.")
-    return redirect(f'/users{user_id}')
+    return redirect(f'/users/{user_id}')

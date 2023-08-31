@@ -5,6 +5,7 @@ from models import DEFAULT_IMAGE_URL, User, Post
 db.drop_all()
 db.create_all()
 
+# For testing database initially
 michael = User(first_name='Michael', last_name='Griffin', image_url=DEFAULT_IMAGE_URL)
 josh = User(first_name='Joshua', last_name='Hellstrom')
 

@@ -7,12 +7,11 @@
 <!--edit_user comment for testing-->
 
 
-<!-- update input values with imported user details-->
 <form class="create-post-form" method="POST">
   <label for="title">Title: </label>
   <input name="title" value="{{ post.title }}">
   <label for="content">Content:   </label>
-  <input name="content" value="{{ post.content }}">
+  <textarea name="content">{{ post.content }}</textarea>
   <button formmethod="get">Cancel</button>
   <button type="submit">Add</button>
 </form>
