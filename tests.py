@@ -1,10 +1,10 @@
 import os
 
-os.environ["DATABASE_URL"] = "postgresql:///blogly_test"
+os.environ["DATABASE_URL"] = "postgresql:///users"
 
 from unittest import TestCase
 
-from _app import app, db
+from app import app, db
 from models import DEFAULT_IMAGE_URL, User
 
 # Make Flask errors be real errors, rather than HTML pages with error info
@@ -52,7 +52,13 @@ class UserViewTestCase(TestCase):
     def tearDown(self):
         """Clean up any fouled transaction."""
         db.session.rollback()
+    #@app.get('/')
+    def test_list_redirect(self):
+        with self.client as c:
+            resp = c.get("/")
+            self.assertEqual(resp.status_code, 302)
 
+    #@app.get('/users')
     def test_list_users(self):
         with self.client as c:
             resp = c.get("/users")
@@ -60,3 +66,33 @@ class UserViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
             self.assertIn("test1_first", html)
             self.assertIn("test1_last", html)
+
+    #@app.get('/users/new')
+    def test_new_users_get(self):
+        with self.client as c:
+            resp = c.get("/users/new")
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("<h1> Create a User ", html)
+
+    # #@app.post('/users/new')
+    # def test_new_users_post(self):
+    #     with self.client as c:
+    #         new_user_form = {
+    #             "first_name": "John",
+    #             "last_name": "Smith",
+    #             "image_url": "default-image.jpg"
+    #         }
+
+    #         #add to post? follow_redirects=True
+    #         #Otherwise we might not get to /users
+    #         resp = c.post('/', data=new_user_form)
+
+    #         #Still need some check to see if table itself updated?
+
+    #         #New users form should redirect back to users list:
+    #         self.assertEqual(resp.status_code, 302)
+
+    #         html = resp.get_data(as_text=True)
+    #         self.assertIn("John", html)
+    #         self.assertIn("Smith", html)

@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-<!-- Eventually, should be passing full user object, rather than just name..-->
+
 {% block title %} Edit a User {% endblock %}
 
 {% block content %}
-
+<!--edit_user comment for testing-->
 {% for msg in get_flashed_messages() %}
   <p style="color: red">{{ msg }}</p>
 {% endfor %}
