@@ -4,7 +4,7 @@
 {% block title %} Edit Post {% endblock %}
 
 {% block content %}
-<!--edit_user comment for testing-->
+<!--edit_post comment for testing-->
 
 
 <form class="create-post-form" method="POST">
@@ -12,7 +12,7 @@
   <input name="title" value="{{ post.title }}">
   <label for="content">Content:   </label>
   <textarea name="content">{{ post.content }}</textarea>
-  <button formmethod="get">Cancel</button>
+  <button formmethod="get" formaction="/users/{{ post.user_id }}">Cancel</button>
   <button type="submit">Add</button>
 </form>
 {% endblock %}

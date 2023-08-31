@@ -19,6 +19,14 @@ connect_db(app)
 
 
 
+
+# @app.get('/')
+# def show_home_page():
+#     """List of users, button to add user."""
+#     posts = Post.query.order_by('created_at")all()' ) #.desc()
+#     return render_template('home.html', posts=posts)
+
+
 @app.get('/')
 def show_home_page():
     """List of users, button to add user."""
@@ -123,8 +131,8 @@ def show_new_post_form(user_id):
 @app.post('/users/<int:user_id>/posts/new')
 def add_new_post(user_id):
     """Handle add form; add post and redirect to the user detail page."""
-    title = request.form.get('title')
-    content = request.form.get('content')
+    title = request.form['title']
+    content = request.form.get['content']
 
     if not title or not content:
         if not title:
@@ -141,12 +149,14 @@ def add_new_post(user_id):
     return redirect(f"/users/{user_id}")
 
 
+
+
+
 @app.get('/posts/<int:post_id>')
 def show_post(post_id):
     """Show a post"""
     post = Post.query.get(post_id)
     return render_template('post_detail.html', post=post)
-
 
 
 @app.get('/posts/<int:post_id>/edit')
@@ -159,8 +169,8 @@ def show_edit_post_form(post_id):
 @app.post('/posts/<int:post_id>/edit')
 def edit_post_details(post_id):
     """Handle editing of a post. Redirect back to the post view."""
-    title = request.form.get('title')
-    content = request.form.get('content')
+    title = request.form['title']
+    content = request.form['content']
 
     post = Post.query.get(post_id)
     post.title = title

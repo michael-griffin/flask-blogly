@@ -42,7 +42,7 @@ class User(db.Model):
 
 
 class Post(db.Model):
-    """User documentation"""
+    """Post column setup"""
     __tablename__ = "posts"
 
     id = db.Column(
@@ -62,7 +62,7 @@ class Post(db.Model):
 
     created_at = db.Column(
         db.Date(),
-        default=datetime.now() #possible to have this set up elsewhere?
+        default=datetime.now()
     )
 
     user_id = db.Column(

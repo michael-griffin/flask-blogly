@@ -11,5 +11,17 @@ josh = User(first_name='Joshua', last_name='Hellstrom')
 
 db.session.add(michael)
 db.session.add(josh)
-
 db.session.commit()
+
+
+test_post = Post(
+    title="user1 title",
+    content="user1 content",
+    user_id = michael.id,
+)
+
+db.session.add(test_post)
+db.session.commit()
+
+
+
