@@ -1,5 +1,5 @@
 from app import app, db
-from models import DEFAULT_IMAGE_URL, User
+from models import DEFAULT_IMAGE_URL, User, Post
 
 
 db.drop_all()

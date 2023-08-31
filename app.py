@@ -4,7 +4,7 @@ import os
 
 from flask import Flask, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import connect_db, db, User
+from models import connect_db, db, User, Post
 
 
 app = Flask(__name__)
@@ -32,21 +32,16 @@ def show_all_users():
     """Show all users"""
     #get database, pass users to index.html
     users = User.query.all()
+    # contains link to the add-user form.
     return render_template('index.html', users=users)
-#     Have a link here to the add-user form.
 
 
-#     Show an add form for users
 @app.get('/users/new')
 def show_add_form():
     """Show an add form for users"""
-
-    return render_template('create_user.html')
-
-#     Make these links to view the detail page for the user.
+    return render_template('add_user.html')
 
 
-#     Process the add form, adding a new user and going back to /users
 @app.post('/users/new')
 def add_new_user():
     """Process the add form, adding a new user and going back to /users"""
@@ -84,7 +79,7 @@ def show_edit_details(user_id):
 
 
 @app.post('/users/<int:user_id>/edit')
-def add_edit_details(user_id):
+def edit_user_details(user_id):
     """Update user info with form's values"""
     first_name = request.form.get('first_name')
     last_name = request.form.get('last_name')
@@ -126,3 +121,93 @@ def delete_user(user_id):
 
 
 
+
+# Add Post Routes»
+
+# GET /users/[user-id]/posts/new
+@app.get('/users/<int:user_id>/posts/new')
+def show_new_post_form(user_id):
+    """Show an add form for users"""
+    user = User.query.get(user_id)
+    return render_template('add_post.html', user=user)
+
+
+
+# POST /users/[user-id]/posts/new
+@app.post('/users/<int:user_id>/posts/new')
+def add_new_post(user_id):
+    """Handle add form; add post and redirect to the user detail page."""
+    title = request.form.get('title')
+    content = request.form.get('content')
+
+    if not title or not content:
+        if not title:
+            flash('A title is needed')
+        if not content:
+            flash('Post content is needed')
+        return redirect('/users/<int:user_id>/posts/new')
+
+    post = Post(title=title, content=content)
+    db.session.add(post)
+    db.session.commit()
+
+    flash('Post added!')
+    return redirect(f"/users/{user_id}")
+
+
+
+# GET /posts/[post-id]
+@app.get('/posts/<int:post_id>')
+def show_post(post_id):
+    """Show a post"""
+    post = Post.query.get(post_id)
+    return render_template('post_detail.html', post=post)
+
+
+
+@app.get('/posts/<int:post_id>/edit')
+def show_edit_post_form(post_id):
+    """Show edit post form and have cancel to return to user page"""
+    post = Post.query.get(post_id)
+    return render_template('edit_post.html', post=post)
+
+
+
+@app.post('/posts/<int:post_id>/edit')
+def edit_post_details(post_id):
+    """Handle editing of a post. Redirect back to the post view."""
+    title = request.form.get('title')
+    content = request.form.get('content')
+
+    post = Post.query.get(post_id)
+    post.title = title
+    post.content = content
+
+    db.session.commit()
+
+    #Otherwise, redirect them to the posts page
+    if not title or not content:
+        if not title:
+            flash('A title is needed')
+        if not content:
+            flash('Post content is needed')
+        return redirect(f"/posts/{post_id}/edit")
+    else:
+        flash("Post edited successfully!")
+        return redirect(f"/posts/{post_id}")
+
+
+
+
+# POST /posts/[post-id]/delete
+#     Delete the post.
+@app.post('/posts/<int:post_id>/delete')
+def delete_post(post_id):
+    """Delete the user and return to the user list (while confirming delete)"""
+    post = Post.query.get(post_id)
+    user_id = post.user.id
+    db.session.delete(post)
+    db.session.commit()
+
+    flash("Post deleted sucessfully.")
+    return redirect(f'/users{user_id}')

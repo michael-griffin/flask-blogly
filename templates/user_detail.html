@@ -23,16 +23,17 @@
 
 <div>
   <h3>Posts</h3>
-  <ul class="users-list">
-    {% for user in users %}
-    <a href="/users/{{ user.id }}">
+  {{ user.post }}
+  <ul class="post-list">
+    {% for post in user.posts %}
+    <a href="/posts/{{ post.id }}">
       <li>{{ post.title }}</li>
     </a>
 
     {% endfor %}
   </ul>
 
-  <form action="/users/new">
+  <form action="/users/{{ user.id }}/posts/new">
     <button>Add Post</button>
   </form>
 </div>
