@@ -30,16 +30,19 @@ test_post_2 = Post(
 tag1 = Tag(name="tag1")
 tag2 = Tag(name="tag2")
 
-post_tag1 = PostTag(post_id=1, tag_id=1)
-# post_tag2 = PostTag(post_id=test_post_2.id, tag_id=tag2.id)
+print("TAG", tag1, tag1.id)
 
 db.session.add(test_post)
 db.session.add(test_post_2)
 db.session.add(tag1)
 db.session.add(tag2)
-db.session.add(post_tag1)
-# db.session.add(post_tag2)
+db.session.commit()
 
+post_tag1 = PostTag(post_id=test_post.id, tag_id=tag1.id)
+post_tag2 = PostTag(post_id=test_post_2.id, tag_id=tag2.id)
+
+db.session.add(post_tag1)
+db.session.add(post_tag2)
 
 db.session.commit()
 

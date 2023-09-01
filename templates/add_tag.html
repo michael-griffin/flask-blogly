@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} Create a Tag {% endblock %}
+
+
+{% block content %}
+<!--create_user comment for testing-->
+<form class="create-tag-form" method="POST">
+  <label for="tag_name">Name: </label>
+  <input name="tag_name">
+  <button>Add</button>
+  <button>Cancel</button>
+</form>
+
+{% endblock %}

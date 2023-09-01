@@ -4,7 +4,7 @@ import os
 
 from flask import Flask, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import connect_db, db, User, Post
+from models import connect_db, db, User, Post, Tag, PostTag
 
 
 app = Flask(__name__)
@@ -200,3 +200,81 @@ def delete_post(post_id):
 
     flash("Post deleted sucessfully.")
     return redirect(f'/users/{user_id}')
+
+@app.get('/tags')
+def show_tags():
+    """Show all tags"""
+    tags = Tag.query.all()
+    return render_template('tags.html', tags=tags)
+
+
+@app.get('/tags/new')
+def show_new_tag_form():
+    """Show an add form for tags"""
+
+    return render_template('add_tag.html')
+
+
+@app.post('/tags/new')
+def add_new_tag():
+    """Process the add form, adding a new user and going back to /users"""
+
+    tag_name = request.form['tag_name']
+    tag = Tag(name=tag_name)
+
+    db.session.add(tag)
+    db.session.commit()
+
+    flash('Tag added!')
+    return redirect('/tags')
+
+
+@app.get('/tags/<int:tag_id>')
+def show_tag_details(tag_id):
+    """Show information about the given tag."""
+    tag = Tag.query.get_or_404(tag_id)
+    return render_template('tag_detail.html', tag=tag)
+
+
+@app.get('/tags/<int:tag_id>/edit')
+def show_edit_tag_form(tag_id):
+    """Show edit post form and have cancel to return to user page"""
+    tag = Tag.query.get(tag_id)
+    return render_template('edit_tag.html', tag=tag)
+
+
+@app.post('/posts/<int:tag_id>/edit')
+def edit_tag_details(tag_id):
+    """Handle editing of a post. Redirect back to the post view."""
+    name = request.form['tag_name']
+
+    tag = Tag.query.get(tag_id)
+    tag.name = name
+
+    db.session.commit()
+
+
+
+
+@app.post('/posts/<int:post_id>/edit')
+def edit_post_details(post_id):
+    """Handle editing of a post. Redirect back to the post view."""
+    title = request.form['title']
+    content = request.form['content']
+
+    post = Post.query.get(post_id)
+    post.title = title
+    post.content = content
+
+    db.session.commit()
+
+    #Otherwise, redirect them to the posts page
+    if not title or not content:
+        if not title:
+            flash('A title is needed')
+        if not content:
+            flash('Post content is needed')
+        return redirect(f"/posts/{post_id}/edit")
+    else:
+        flash("Post edited successfully!")
+        return redirect(f"/posts/{post_id}")

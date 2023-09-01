@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} Users {% endblock %}
+
+{% block content %}
+<!--users comment for testing tags-->
+
+{% for msg in get_flashed_messages() %}
+  <p style="color: green">{{ msg }}</p>
+{% endfor %}
+
+<div>
+  <ul class="tags-list">
+    {% for tag in tags %}
+    <a href="/tags/{{ tag.id }}">
+      <li>{{ tag.name }}</li>
+    </a>
+
+    {% endfor %}
+  </ul>
+
+  <form action="/tags/new">
+    <button>Add</button>
+  </form>
+</div>
+
+{% endblock %}
