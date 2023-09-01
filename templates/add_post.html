@@ -10,6 +10,12 @@
   <input name="title">
   <label for="content">Content:   </label>
   <textarea name="content"></textarea>
+
+  {% for tag in user.posts.tags %}
+    <input type="checkbox" name="{{ tag.name }}" value="{{ tag.name }}">
+    <label for="{{ tag.name }}"></label>
+  {% endfor %}
+
   <button formmethod="get">Cancel</button>
   <button type="submit">Add</button>
 </form>

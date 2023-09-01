@@ -92,7 +92,7 @@ class Tag(db.Model):
         nullable=False,
     )
 
-    posts = db.relationship('Post', secondary="post_tags", backref="tag")
+    posts = db.relationship('Post', secondary="post_tags", backref="tags")
 
 
 

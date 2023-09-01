@@ -9,6 +9,17 @@
   {{ post.content }}
 </p>
 
+tags
+<ul>
+  {% for tag in post.tags %}
+  <a href="/tags/{{ tag.id }}">
+    <li>{{ tag.name }}</li>
+  </a>
+  {% endfor %}
+</ul>
+
+
+
 <form action="/users/{{ post.user_id }}" >
   <button formmethod="get" >Cancel</button>
   <button formmethod="get" formaction="/posts/{{ post.id }}/edit">Edit</button>

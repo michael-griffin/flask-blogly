@@ -201,6 +201,10 @@ def delete_post(post_id):
     flash("Post deleted sucessfully.")
     return redirect(f'/users/{user_id}')
 
+
+
+
+
 @app.get('/tags')
 def show_tags():
     """Show all tags"""
@@ -243,7 +247,7 @@ def show_edit_tag_form(tag_id):
     return render_template('edit_tag.html', tag=tag)
 
 
-@app.post('/posts/<int:tag_id>/edit')
+@app.post('/tags/<int:tag_id>/edit')
 def edit_tag_details(tag_id):
     """Handle editing of a post. Redirect back to the post view."""
     name = request.form['tag_name']
@@ -252,29 +256,22 @@ def edit_tag_details(tag_id):
     tag.name = name
 
     db.session.commit()
-
-
-
-
-@app.post('/posts/<int:post_id>/edit')
-def edit_post_details(post_id):
-    """Handle editing of a post. Redirect back to the post view."""
-    title = request.form['title']
-    content = request.form['content']
-
-    post = Post.query.get(post_id)
-    post.title = title
-    post.content = content
-
-    db.session.commit()
-
     #Otherwise, redirect them to the posts page
-    if not title or not content:
-        if not title:
-            flash('A title is needed')
-        if not content:
-            flash('Post content is needed')
-        return redirect(f"/posts/{post_id}/edit")
+    if not name:
+        flash('tag name is needed')
+        return redirect(f"/tags/{tag_id}/edit")
     else:
         flash("Post edited successfully!")
-        return redirect(f"/posts/{post_id}")
+        return redirect(f"/tags/{tag_id}")
+
+
+@app.post('/tags/<int:tag_id>/delete')
+def delete_tag(tag_id):
+    """Delete the tag and return to the tag list"""
+    tag = Tag.query.get(tag_id)
+    tag_id = tag.id
+    db.session.delete(tag)
+    db.session.commit()
+
+    flash('Tag deleted.')
+    return redirect(f'/tags')
